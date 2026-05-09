@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>page22</title>
+  </head>
+  <body>
+    {% include "navbar.html" %}
+    
+    <h2> welcome my {{name}} </h2>
+    {% for n in name %} {% if not n == 'x' %}
+    <p>{{n}}</p>
+    {% endif %} {% endfor %}
+
+          <div>
+           
+          {% for user in all_user %}
+          <h2> Start your journey, {{user.username}} <h2>
+          {% endfor %}
+          </div>
+      
+
+    <p>
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi sed soluta
+      qui earum necessitatibus repellat molestiae facere minus culpa debitis
+      dicta ea est officiis veniam nemo eaque incidunt beatae, ipsam nostrum eum
+      saepe dignissimos?
+    </p>
+    <p></p>
+
+    <button
+      onclick="document.getElementById('loading-content').classList.toggle('hidden')"
+    >
+      Toggle Loading Content
+    </button>
+
+    {# Your loading content - ALWAYS PRESENT but initially hidden #}
+    <div id="loading-content" class="hidden">
+      {% include "boxloading.html" %}
+    </div>
+    {% include "kitchensink.html" %} {% include "art1.html" %} {% include
+    "colorfulspinners.html" %}
+
+    <button
+      onclick="document.getElementById('loginform').classList.toggle('hidden')"
+    >
+      Loginform
+    </button>
+
+    {# Your loading content - ALWAYS PRESENT but initially hidden #}
+    <div id="loginform" class="hidden">{% include "loginform.html" %}</div>
+
+    <!--
+  -->
+    <button
+      onclick="document.getElementById('setpassword').classList.toggle('hidden')"
+    >
+      Set Password
+    </button>
+
+    <div id="setpassword" class="hidden">{% include "setpassword.html" %}</div>
+
+    {% extends "base.html" %} {% block content %} {# Simple button that toggles
+    visibility using pure JavaScript #}
+    <button
+      onclick="document.getElementById('loading-content2').classList.toggle('hidden')"
+    >
+      Toggle Loading Content
+    </button>
+
+    {# Your loading content - ALWAYS PRESENT but initially hidden #}
+    <div id="loading-content2" class="hidden">{% include "loading.html" %}</div>
+
+    {# Your normal content #}
+    <div>Welcome {{ user }}! This is normal content.</div>
+
+    <style>
+      .hidden {
+        display: none;
+      }
+    </style>
+    {% endblock %} {% block kitchensink %}
+    <style>
+      body {
+        color: white;
+        background: black;
+      }
+    </style>
+    {% endblock %} {% block content1 %}
+    <p>
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem repellat
+      atque hic?
+    </p>
+    {% endblock %}
+    <p>nothing written here would be visible on webpage</p>
+
+    <script>
+      document.querySelector("button").addEventListener("click", function (e) {
+        e.preventDefault();
+        window.location.href =
+          this.getAttribute("onclick").match(/href='([^']+)'/)[1];
+      });
+    </script>
+  </body>
+</html>
