@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ShelfShare — Sneha's Lending Library</title>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+        <style>
+            :root {
+                --green: #2D6A4F;
+                --green-dark: #1B4332;
+                --green-light: #D8F3DC;
+                --terra: #C4622D;
+                --terra-light: #F5E6DC;
+                --cream: #FAF6F0;
+                --warm-white: #FFFDF9;
+                --ink: #1A1A18;
+                --muted: #6B6560;
+                --border: #E8E0D5;
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0
+            }
+
+            html {
+                scroll-behavior: smooth
+            }
+
+            body {
+                font-family: 'DM Sans',sans-serif;
+                background: var(--cream);
+                color: var(--ink);
+                overflow-x: hidden
+            }
+
+            /* NAV */
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 100;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 20px 56px;
+                background: rgba(250,246,240,0.94);
+                backdrop-filter: blur(14px);
+                border-bottom: 1px solid var(--border)
+            }
+
+            .nav-logo {
+                font-family: 'Playfair Display',serif;
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--green-dark);
+                text-decoration: none;
+                letter-spacing: -0.5px
+            }
+
+            .nav-logo span {
+                color: var(--terra);
+                font-style: italic
+            }
+
+            .nav-links {
+                display: flex;
+                gap: 32px;
+                list-style: none
+            }
+
+            .nav-links a {
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 1px;
+                color: var(--muted);
+                text-decoration: none;
+                text-transform: uppercase;
+                transition: color 0.2s
+            }
+
+            .nav-links a:hover {
+                color: var(--green)
+            }
+
+            .nav-cta {
+                background: var(--green);
+                color: white;
+                padding: 10px 24px;
+                border-radius: 2px;
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+                text-decoration: none;
+                text-transform: uppercase;
+                transition: background 0.2s
+            }
+
+            .nav-cta:hover {
+                background: var(--green-dark)
+            }
+
+            /* HERO */
+            .hero {
+                min-height: 100vh;
+                display: grid;
+                grid-template-columns: 55% 45%;
+                padding-top: 72px
+            }
+
+            .hero-left {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 80px 72px 80px 80px
+            }
+
+            .eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                font-family: 'Caveat',cursive;
+                font-size: 16px;
+                color: var(--terra);
+                margin-bottom: 28px
+            }
+
+            .eyebrow::before {
+                content: '';
+                width: 28px;
+                height: 1px;
+                background: var(--terra)
+            }
+
+            h1 {
+                font-family: 'Playfair Display',serif;
+                font-size: clamp(44px,4.5vw,68px);
+                line-height: 1.05;
+                font-weight: 700;
+                color: var(--green-dark);
+                letter-spacing: -2px;
+                margin-bottom: 28px
+            }
+
+            h1 em {
+                font-style: italic;
+                color: var(--terra);
+                display: block
+            }
+
+            .hero-sub {
+                font-size: 17px;
+                line-height: 1.8;
+                color: var(--muted);
+                max-width: 440px;
+                margin-bottom: 52px;
+                font-weight: 300
+            }
+
+            .hero-sub strong {
+                color: var(--ink);
+                font-weight: 500
+            }
+
+            .ctas {
+                display: flex;
+                gap: 14px;
+                flex-wrap: wrap
+            }
+
+            .btn {
+                padding: 14px 32px;
+                border-radius: 2px;
+                font-size: 13px;
+                font-weight: 500;
+                letter-spacing: 0.3px;
+                text-decoration: none;
+                display: inline-block;
+                transition: all 0.2s
+            }
+
+            .btn-p {
+                background: var(--green);
+                color: white
+            }
+
+            .btn-p:hover {
+                background: var(--green-dark);
+                transform: translateY(-1px)
+            }
+
+            .btn-o {
+                background: transparent;
+                color: var(--green);
+                border: 1.5px solid var(--green)
+            }
+
+            .btn-o:hover {
+                background: var(--green-light)
+            }
+
+            .hero-right {
+                background: var(--green-dark);
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: center;
+                padding-bottom: 56px
+            }
+
+            .shelf-visual {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 40px 32px
+            }
+
+            .srow {
+                display: flex;
+                align-items: flex-end;
+                gap: 3px;
+                border-bottom: 5px solid rgba(255,255,255,0.1);
+                padding: 0 4px 5px;
+                height: 90px
+            }
+
+            .b {
+                width: var(--w,16px);
+                height: var(--h,60px);
+                background: var(--c,#4a7c5e);
+                border-radius: 1px 2px 2px 1px;
+                flex-shrink: 0;
+                position: relative;
+                transition: transform 0.3s ease
+            }
+
+            .b:hover {
+                transform: translateY(-10px)
+            }
+
+            .b::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 3px;
+                background: rgba(0,0,0,0.18);
+                border-radius: 1px 0 0 1px
+            }
+
+            .hero-quote {
+                position: relative;
+                z-index: 2;
+                text-align: center;
+                color: rgba(255,255,255,0.65);
+                font-family: 'Caveat',cursive;
+                font-size: 18px;
+                line-height: 1.7;
+                padding: 24px 40px 0;
+                border-top: 1px solid rgba(255,255,255,0.1);
+                margin: 0 32px
+            }
+
+            /* SECTIONS */
+            .sec {
+                padding: 100px 80px
+            }
+
+            .inner {
+                max-width: 1100px;
+                margin: 0 auto
+            }
+
+            .lbl {
+                font-family: 'Caveat',cursive;
+                font-size: 17px;
+                color: var(--terra);
+                margin-bottom: 14px;
+                display: flex;
+                align-items: center;
+                gap: 10px
+            }
+
+            .lbl::after {
+                content: '';
+                width: 40px;
+                height: 1px;
+                background: var(--terra);
+                opacity: 0.4
+            }
+
+            h2 {
+                font-family: 'Playfair Display',serif;
+                font-size: clamp(30px,3vw,44px);
+                line-height: 1.1;
+                font-weight: 700;
+                color: var(--green-dark);
+                letter-spacing: -1px;
+                margin-bottom: 16px
+            }
+
+            h2 em {
+                font-style: italic;
+                color: var(--terra)
+            }
+
+            /* TORN PAPER DIVIDERS */
+            .torn {
+                width: 100%;
+                overflow: hidden;
+                line-height: 0;
+                margin-bottom: -2px
+            }
+
+            .torn svg {
+                display: block;
+                width: 100%;
+                height: 48px
+            }
+
+            .torn.flip {
+                transform: rotate(180deg)
+            }
+
+            /* ABOUT */
+            .about-sneha {
+                background: var(--warm-white)
+            }
+
+            .sneha-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 80px;
+                align-items: center;
+                margin-top: 56px
+            }
+
+            .sneha-body {
+                font-size: 16px;
+                line-height: 1.9;
+                color: var(--muted);
+                font-weight: 300
+            }
+
+            .sneha-body p {
+                margin-bottom: 20px
+            }
+
+            .sneha-body strong {
+                color: var(--ink);
+                font-weight: 500
+            }
+
+            .sneha-pq {
+                font-family: 'Caveat',cursive;
+                font-size: 22px;
+                color: var(--green-dark);
+                line-height: 1.6;
+                border-left: 3px solid var(--terra);
+                padding-left: 24px;
+                margin-top: 32px
+            }
+
+            .stats {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2px
+            }
+
+            .stat {
+                background: var(--cream);
+                padding: 36px 28px;
+                border: 1px solid var(--border)
+            }
+
+            .stat.dk {
+                background: var(--green)
+            }
+
+            .stat-n {
+                font-family: 'Playfair Display',serif;
+                font-size: 52px;
+                font-weight: 700;
+                color: var(--green);
+                line-height: 1;
+                margin-bottom: 6px
+            }
+
+            .stat.dk .stat-n {
+                color: white
+            }
+
+            .stat-l {
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                color: var(--muted)
+            }
+
+            .stat.dk .stat-l {
+                color: rgba(255,255,255,0.65)
+            }
+
+            /* HOW IT WORKS */
+            .how {
+                background: var(--cream)
+            }
+
+            .steps {
+                display: grid;
+                grid-template-columns: repeat(4,1fr);
+                gap: 2px;
+                margin-top: 56px
+            }
+
+            .step {
+                background: var(--warm-white);
+                padding: 36px 24px;
+                border: 1px solid var(--border);
+                transition: border-color 0.2s
+            }
+
+            .step:hover {
+                border-color: var(--green)
+            }
+
+            .step.special {
+                background: var(--terra-light);
+                border-color: var(--terra)
+            }
+
+            .step-n {
+                font-family: 'Playfair Display',serif;
+                font-size: 52px;
+                font-weight: 700;
+                color: var(--green-light);
+                line-height: 1;
+                margin-bottom: 14px
+            }
+
+            .step.special .step-n {
+                color: rgba(196,98,45,0.25)
+            }
+
+            .step-icon {
+                width: 28px;
+                height: 28px;
+                margin-bottom: 12px;
+                display: block;
+                color: var(--green);
+                stroke: var(--green);
+                fill: none;
+                stroke-width: 1.5;
+                stroke-linecap: round;
+                stroke-linejoin: round
+            }
+
+            .step.special .step-icon {
+                color: var(--terra);
+                stroke: var(--terra)
+            }
+
+            .step h3 {
+                font-family: 'Playfair Display',serif;
+                font-size: 18px;
+                color: var(--green-dark);
+                margin-bottom: 8px
+            }
+
+            .step.special h3 {
+                color: var(--terra)
+            }
+
+            .step p {
+                font-size: 13px;
+                line-height: 1.75;
+                color: var(--muted);
+                font-weight: 300
+            }
+
+            /* PATHS */
+            .paths {
+                background: var(--green-dark);
+                padding: 100px 80px
+            }
+
+            .paths-inner {
+                max-width: 1100px;
+                margin: 0 auto
+            }
+
+            .paths .lbl {
+                color: rgba(255,255,255,0.7)
+            }
+
+            .paths .lbl::after {
+                background: rgba(255,255,255,0.2)
+            }
+
+            .paths-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2px;
+                margin-top: 48px
+            }
+
+            .path {
+                padding: 48px 40px;
+                border: 1px solid rgba(255,255,255,0.1)
+            }
+
+            .path.browse {
+                background: rgba(255,255,255,0.05)
+            }
+
+            .path.rec {
+                background: var(--terra);
+                border-color: var(--terra)
+            }
+
+            .path-icon {
+                width: 44px;
+                height: 44px;
+                margin-bottom: 20px;
+                display: block;
+                stroke: white;
+                fill: none;
+                stroke-width: 1.5;
+                stroke-linecap: round;
+                stroke-linejoin: round
+            }
+
+            .path h3 {
+                font-family: 'Playfair Display',serif;
+                font-size: 26px;
+                color: white;
+                margin-bottom: 12px
+            }
+
+            .path p {
+                font-size: 15px;
+                line-height: 1.8;
+                color: rgba(255,255,255,0.7);
+                font-weight: 300;
+                margin-bottom: 28px
+            }
+
+            .path.rec p {
+                color: rgba(255,255,255,0.85)
+            }
+
+            .path-btn {
+                display: inline-block;
+                padding: 12px 28px;
+                border-radius: 2px;
+                font-size: 13px;
+                font-weight: 500;
+                text-decoration: none;
+                letter-spacing: 0.3px;
+                transition: all 0.2s
+            }
+
+            .path.browse .path-btn {
+                background: white;
+                color: var(--green-dark)
+            }
+
+            .path.browse .path-btn:hover {
+                background: var(--green-light)
+            }
+
+            .path.rec .path-btn {
+                background: rgba(255,255,255,0.2);
+                color: white;
+                border: 1px solid rgba(255,255,255,0.4)
+            }
+
+            .path.rec .path-btn:hover {
+                background: rgba(255,255,255,0.3)
+            }
+
+            /* CATALOG */
+            .catalog {
+                background: var(--cream)
+            }
+
+            .catalog-intro {
+                font-size: 16px;
+                line-height: 1.8;
+                color: var(--muted);
+                font-weight: 300;
+                max-width: 640px;
+                margin-bottom: 16px
+            }
+
+            .drop-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: var(--green);
+                color: white;
+                padding: 8px 18px;
+                border-radius: 2px;
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                margin-bottom: 40px
+            }
+
+            .drop-badge::before {
+                content: '●';
+                font-size: 8px;
+                animation: pulse 2s infinite
+            }
+
+            @keyframes pulse {
+                0%,100% {
+                    opacity: 1
+                }
+
+                50% {
+                    opacity: 0.4
+                }
+            }
+
+            /* LUGGAGE TAG GENRE FILTERS */
+            .genre-tabs {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin-bottom: 32px
+            }
+
+            .gtab {
+                position: relative;
+                padding: 7px 18px 7px 26px;
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                cursor: pointer;
+                color: var(--muted);
+                background: var(--warm-white);
+                border: 1px solid var(--border);
+                border-radius: 3px;
+                transition: all 0.2s;
+                font-family: 'DM Sans',sans-serif;
+                clip-path: polygon(14px 0%, 100% 0%, 100% 100%, 14px 100%, 0% 50%)
+            }
+
+            .gtab::before {
+                content: '';
+                position: absolute;
+                left: 8px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                background: var(--border);
+                transition: background 0.2s
+            }
+
+            .gtab.active,.gtab:hover {
+                background: var(--green);
+                border-color: var(--green);
+                color: white
+            }
+
+            .gtab.active::before,.gtab:hover::before {
+                background: rgba(255,255,255,0.5)
+            }
+
+            .books-grid {
+                display: grid;
+                grid-template-columns: repeat(3,1fr);
+                gap: 2px
+            }
+
+            .book-card {
+                background: var(--warm-white);
+                border: 1px solid var(--border);
+                padding: 28px 24px;
+                transition: border-color 0.2s;
+                position: relative
+            }
+
+            .book-card:hover {
+                border-color: var(--green)
+            }
+
+            .book-card.out {
+                opacity: 0.55
+            }
+
+            .book-genre {
+                font-size: 10px;
+                font-weight: 500;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                color: var(--terra);
+                margin-bottom: 10px
+            }
+
+            .book-title {
+                font-family: 'Playfair Display',serif;
+                font-size: 17px;
+                font-weight: 600;
+                color: var(--green-dark);
+                line-height: 1.3;
+                margin-bottom: 5px
+            }
+
+            .book-author {
+                font-size: 12px;
+                color: var(--muted);
+                margin-bottom: 14px;
+                font-weight: 300
+            }
+
+            .book-desc {
+                font-size: 13px;
+                line-height: 1.65;
+                color: var(--muted);
+                font-style: italic
+            }
+
+            .book-status {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                font-size: 10px;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                padding: 4px 10px;
+                border-radius: 2px
+            }
+
+            .av {
+                background: var(--green-light);
+                color: var(--green)
+            }
+
+            .bw {
+                background: var(--terra-light);
+                color: var(--terra)
+            }
+
+            /* RULES */
+            .rules {
+                background: var(--terra-light)
+            }
+
+            .rules-grid {
+                display: grid;
+                grid-template-columns: repeat(3,1fr);
+                gap: 2px;
+                margin-top: 56px
+            }
+
+            .rule {
+                background: var(--warm-white);
+                padding: 36px 28px;
+                border: 1px solid var(--border)
+            }
+
+            .rule.gn {
+                background: var(--green)
+            }
+
+            .rule-icon {
+                width: 28px;
+                height: 28px;
+                margin-bottom: 16px;
+                display: block;
+                stroke: var(--green);
+                fill: none;
+                stroke-width: 1.5;
+                stroke-linecap: round;
+                stroke-linejoin: round
+            }
+
+            .rule.gn .rule-icon {
+                stroke: rgba(255,255,255,0.8)
+            }
+
+            .rule h3 {
+                font-family: 'Playfair Display',serif;
+                font-size: 18px;
+                color: var(--green-dark);
+                margin-bottom: 10px
+            }
+
+            .rule.gn h3 {
+                color: white
+            }
+
+            .rule p {
+                font-size: 14px;
+                line-height: 1.75;
+                color: var(--muted);
+                font-weight: 300
+            }
+
+            .rule.gn p {
+                color: rgba(255,255,255,0.75)
+            }
+
+            /* BOOK CLUB */
+            .bc {
+                background: var(--ink);
+                color: white;
+                padding: 100px 80px;
+                position: relative;
+                overflow: hidden
+            }
+
+            .bc::before {
+                content: '◆';
+                position: absolute;
+                right: 60px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 320px;
+                opacity: 0.03;
+                color: white;
+                pointer-events: none;
+                line-height: 1
+            }
+
+            .bc .lbl {
+                color: rgba(255,255,255,0.6)
+            }
+
+            .bc .lbl::after {
+                background: rgba(255,255,255,0.15)
+            }
+
+            .bc h2 {
+                color: white
+            }
+
+            .bc h2 em {
+                color: var(--terra-light)
+            }
+
+            .bc-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 80px;
+                align-items: start;
+                margin-top: 56px
+            }
+
+            .bc-body {
+                font-size: 16px;
+                line-height: 1.9;
+                color: rgba(255,255,255,0.6);
+                font-weight: 300
+            }
+
+            .bc-body p {
+                margin-bottom: 20px
+            }
+
+            .bc-body strong {
+                color: white;
+                font-weight: 500
+            }
+
+            .bc-pq {
+                font-family: 'Caveat',cursive;
+                font-size: 20px;
+                color: rgba(255,255,255,0.75);
+                line-height: 1.6;
+                border-left: 3px solid var(--terra);
+                padding-left: 24px;
+                margin-top: 28px
+            }
+
+            .perks {
+                list-style: none
+            }
+
+            .perk {
+                display: flex;
+                gap: 18px;
+                align-items: flex-start;
+                padding: 22px 0;
+                border-bottom: 1px solid rgba(255,255,255,0.07)
+            }
+
+            .perk:last-child {
+                border-bottom: none
+            }
+
+            .perk-dot {
+                width: 42px;
+                height: 42px;
+                border-radius: 2px;
+                background: rgba(255,255,255,0.06);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0
+            }
+
+            .perk-dot svg {
+                width: 20px;
+                height: 20px;
+                stroke: rgba(255,255,255,0.6);
+                fill: none;
+                stroke-width: 1.5;
+                stroke-linecap: round;
+                stroke-linejoin: round
+            }
+
+            .perk h4 {
+                font-family: 'Playfair Display',serif;
+                font-size: 16px;
+                color: white;
+                margin-bottom: 4px
+            }
+
+            .perk p {
+                font-size: 13px;
+                color: rgba(255,255,255,0.5);
+                font-weight: 300;
+                line-height: 1.6
+            }
+
+            /* BONUS */
+            .bonus {
+                background: var(--cream)
+            }
+
+            .bonus-card {
+                background: var(--green-dark);
+                color: white;
+                padding: 64px;
+                margin-top: 56px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 80px;
+                align-items: center
+            }
+
+            .bonus-body {
+                font-size: 16px;
+                line-height: 1.9;
+                color: rgba(255,255,255,0.65);
+                font-weight: 300
+            }
+
+            .bonus-body p {
+                margin-bottom: 16px
+            }
+
+            .bonus-body strong {
+                color: white;
+                font-weight: 500
+            }
+
+            .bonus-visual {
+                display: flex;
+                flex-direction: column;
+                gap: 14px
+            }
+
+            .bonus-tag {
+                display: inline-flex;
+                align-items: center;
+                gap: 12px;
+                background: rgba(255,255,255,0.07);
+                padding: 14px 20px;
+                border-radius: 2px;
+                font-size: 14px;
+                color: rgba(255,255,255,0.7);
+                font-weight: 300;
+                border: 1px solid rgba(255,255,255,0.1)
+            }
+
+            .bonus-tag svg {
+                width: 20px;
+                height: 20px;
+                stroke: rgba(255,255,255,0.6);
+                fill: none;
+                stroke-width: 1.5;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                flex-shrink: 0
+            }
+
+            .bonus h3 {
+                font-family: 'Playfair Display',serif;
+                font-size: 28px;
+                color: white;
+                margin-bottom: 16px;
+                line-height: 1.2
+            }
+
+            .bonus h3 em {
+                font-style: italic;
+                color: var(--terra-light)
+            }
+
+            /* CONTACT */
+            .contact {
+                background: var(--green);
+                color: white;
+                padding: 100px 80px;
+                text-align: center
+            }
+
+            .contact .lbl {
+                justify-content: center;
+                color: rgba(255,255,255,0.6)
+            }
+
+            .contact .lbl::after {
+                display: none
+            }
+
+            .contact h2 {
+                color: white
+            }
+
+            .contact h2 em {
+                color: var(--green-light)
+            }
+
+            .contact-sub {
+                font-size: 17px;
+                color: rgba(255,255,255,0.7);
+                font-weight: 300;
+                max-width: 480px;
+                margin: 16px auto 48px;
+                line-height: 1.8
+            }
+
+            .cbtns {
+                display: flex;
+                gap: 14px;
+                justify-content: center;
+                flex-wrap: wrap
+            }
+
+            .cbtn {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                padding: 16px 36px;
+                border-radius: 2px;
+                font-size: 13px;
+                font-weight: 500;
+                letter-spacing: 0.3px;
+                text-decoration: none;
+                transition: all 0.2s
+            }
+
+            .cbtn-w {
+                background: white;
+                color: var(--green)
+            }
+
+            .cbtn-w:hover {
+                background: var(--green-light)
+            }
+
+            footer {
+                background: var(--green-dark);
+                color: rgba(255,255,255,0.4);
+                text-align: center;
+                padding: 32px;
+                font-size: 13px;
+                font-weight: 300
+            }
+
+            footer strong {
+                color: rgba(255,255,255,0.7);
+                font-weight: 500
+            }
+
+            @keyframes fadeUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px)
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0)
+                }
+            }
+
+            .hero-left > * {
+                animation: fadeUp 0.7s ease both
+            }
+
+            .hero-left > *:nth-child(1) {
+                animation-delay: 0.1s
+            }
+
+            .hero-left > *:nth-child(2) {
+                animation-delay: 0.22s
+            }
+
+            .hero-left > *:nth-child(3) {
+                animation-delay: 0.34s
+            }
+
+            .hero-left > *:nth-child(4) {
+                animation-delay: 0.46s
+            }
+
+            @media(max-width: 960px) {
+                nav {
+                    padding:16px 24px
+                }
+
+                .nav-links,.nav-cta {
+                    display: none
+                }
+
+                .hero {
+                    grid-template-columns: 1fr
+                }
+
+                .hero-left {
+                    padding: 100px 32px 60px
+                }
+
+                .hero-right {
+                    height: 300px
+                }
+
+                .sec,.paths,.catalog,.rules,.bc,.bonus,.contact {
+                    padding: 60px 32px
+                }
+
+                .sneha-grid,.bc-grid,.paths-grid,.bonus-card {
+                    grid-template-columns: 1fr;
+                    gap: 40px
+                }
+
+                .steps,.rules-grid {
+                    grid-template-columns: 1fr 1fr
+                }
+
+                .books-grid {
+                    grid-template-columns: 1fr 1fr
+                }
+            }
+
+            @media(max-width: 600px) {
+                .steps,.rules-grid,.books-grid {
+                    grid-template-columns:1fr
+                }
+
+                .stats {
+                    grid-template-columns: 1fr 1fr
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <a href="#" class="nav-logo">
+                Shelf<span>Share</span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="#sneha">About</a>
+                </li>
+                <li>
+                    <a href="#how">How it works</a>
+                </li>
+                <li>
+                    <a href="#catalog">Books</a>
+                </li>
+                <li>
+                    <a href="#rules">Rules</a>
+                </li>
+                <li>
+                    <a href="#bookclub">Book Club</a>
+                </li>
+            </ul>
+            <a href="#contact" class="nav-cta">Borrow a book</a>
+        </nav>
+        <section class="hero">
+            <div class="hero-left">
+                <div class="eyebrow">Sneha's Lending Library · Mumbai</div>
+                <h1>
+                    books deserve <em>more than one reader.</em>
+                </h1>
+                <p class="hero-sub">
+                    Somewhere in Mumbai is a shelf full of books that have already been loved once. They're looking for their next reader. Maybe that's you.<br>
+                    <br>Borrow from a personal collection of 400+ books — loved, dog-eared, and yes, some still waiting to be read. New additions dropped bi-weekly. Return it, and help build something rare — a community built on trust and good taste.
+                </p>
+                <div class="ctas">
+                    <a href="#catalog" class="btn btn-p">Browse the current drop →</a>
+                    <a href="#how" class="btn btn-o">How it works</a>
+                </div>
+            </div>
+            <div class="hero-right">
+                <div class="shelf-visual">
+                    <div class="srow">
+                        <div class="b" style="--w:16px;--h:65px;--c:#4a7c5e"></div>
+                        <div class="b" style="--w:22px;--h:72px;--c:#C4622D"></div>
+                        <div class="b" style="--w:14px;--h:58px;--c:#8B9D77"></div>
+                        <div class="b" style="--w:20px;--h:74px;--c:#2D6A4F"></div>
+                        <div class="b" style="--w:18px;--h:63px;--c:#D4A853"></div>
+                        <div class="b" style="--w:12px;--h:69px;--c:#6B8F71"></div>
+                        <div class="b" style="--w:24px;--h:66px;--c:#A0522D"></div>
+                        <div class="b" style="--w:16px;--h:71px;--c:#558B6E"></div>
+                        <div class="b" style="--w:20px;--h:61px;--c:#C4622D"></div>
+                        <div class="b" style="--w:14px;--h:67px;--c:#3D7A5A"></div>
+                        <div class="b" style="--w:18px;--h:75px;--c:#B5602A"></div>
+                        <div class="b" style="--w:22px;--h:64px;--c:#4E8B68"></div>
+                        <div class="b" style="--w:16px;--h:70px;--c:#D4A853"></div>
+                        <div class="b" style="--w:20px;--h:68px;--c:#2D6A4F"></div>
+                    </div>
+                    <div class="srow">
+                        <div class="b" style="--w:20px;--h:70px;--c:#D4A853"></div>
+                        <div class="b" style="--w:16px;--h:64px;--c:#2D6A4F"></div>
+                        <div class="b" style="--w:14px;--h:73px;--c:#C4622D"></div>
+                        <div class="b" style="--w:22px;--h:59px;--c:#7A9E7E"></div>
+                        <div class="b" style="--w:18px;--h:71px;--c:#9E4A2A"></div>
+                        <div class="b" style="--w:20px;--h:67px;--c:#4a7c5e"></div>
+                        <div class="b" style="--w:12px;--h:62px;--c:#D4A853"></div>
+                        <div class="b" style="--w:16px;--h:74px;--c:#2D6A4F"></div>
+                        <div class="b" style="--w:24px;--h:66px;--c:#C4622D"></div>
+                        <div class="b" style="--w:18px;--h:70px;--c:#6B8F71"></div>
+                        <div class="b" style="--w:14px;--h:63px;--c:#A0522D"></div>
+                        <div class="b" style="--w:20px;--h:68px;--c:#3D7A5A"></div>
+                        <div class="b" style="--w:16px;--h:72px;--c:#558B6E"></div>
+                    </div>
+                    <div class="srow">
+                        <div class="b" style="--w:18px;--h:65px;--c:#558B6E"></div>
+                        <div class="b" style="--w:14px;--h:71px;--c:#C4622D"></div>
+                        <div class="b" style="--w:22px;--h:67px;--c:#2D6A4F"></div>
+                        <div class="b" style="--w:16px;--h:73px;--c:#D4A853"></div>
+                        <div class="b" style="--w:20px;--h:61px;--c:#4a7c5e"></div>
+                        <div class="b" style="--w:12px;--h:69px;--c:#9E4A2A"></div>
+                        <div class="b" style="--w:18px;--h:64px;--c:#7A9E7E"></div>
+                        <div class="b" style="--w:24px;--h:72px;--c:#2D6A4F"></div>
+                        <div class="b" style="--w:16px;--h:66px;--c:#C4622D"></div>
+                        <div class="b" style="--w:20px;--h:70px;--c:#D4A853"></div>
+                        <div class="b" style="--w:14px;--h:63px;--c:#4E8B68"></div>
+                        <div class="b" style="--w:18px;--h:68px;--c:#B5602A"></div>
+                        <div class="b" style="--w:22px;--h:74px;--c:#2D6A4F"></div>
+                    </div>
+                </div>
+                <div class="hero-quote">
+                    "every book has more than one reader in it.<br>I'm just helping it find them."
+                </div>
+            </div>
+        </section>
+        <!-- TORN PAPER DIVIDER -->
+        <div class="torn">
+            <svg viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,0 L0,28 C15,22 28,34 45,28 C62,22 75,32 95,26 C115,20 130,30 150,25 C170,20 185,32 205,27 C225,22 240,31 260,26 C280,21 295,33 315,28 C335,23 350,31 370,26 C390,21 405,33 425,27 C445,21 460,32 480,27 C500,22 515,31 535,26 C555,21 570,33 590,28 C610,23 625,32 645,27 C665,22 680,34 700,28 C720,22 735,31 755,26 C775,21 790,33 810,27 C830,21 845,32 865,27 C885,22 900,31 920,26 C940,21 955,33 975,28 C995,23 1010,32 1030,27 C1050,22 1065,34 1085,28 C1105,22 1120,31 1140,26 C1160,21 1175,32 1200,27 L1200,0 Z" fill="#FFFDF9"/>
+            </svg>
+        </div>
+        <section class="sec about-sneha" id="sneha">
+            <div class="inner">
+                <div class="lbl">The person behind the shelf</div>
+                <h2>
+                    the shelf, <em>and the story behind it.</em>
+                </h2>
+                <div class="sneha-grid">
+                    <div class="sneha-body">
+                        <p>ShelfShare started with one shelf and one belief: that a book someone loved is worth far more than one gathering dust.</p>
+                        <p>
+                            Behind the shelf is <strong>Sneha</strong>
+                            — a finance professional, a compulsive reader, and the person who will personally recommend every single book you borrow.
+                        </p>
+                        <p>The childhood dream was a home filled wall-to-wall with books. Adulthood delivered — just not quite the way she imagined. A full-time job means time is scarce. Retail therapy means the to-read pile is not. Four hundred books later, most of them loved, many of them waiting, none of them content to just sit there — something had to give.</p>
+                        <p>Because books had always been how she found her people. In a city of millions, walking into a room full of strangers is exhausting. Walking into a conversation about a book you both loved is something else entirely. She suspected she wasn't the only one who felt that way.</p>
+                        <p>ShelfShare is what happened next. Not a library, not a book club — something smaller and more honest than both. A shelf with a point of view, a handwritten note in every delivery, and a community built one borrowed book at a time.</p>
+                        <div class="sneha-pq">"every book has more than one reader in it. I'm just helping it find them."</div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-n">400+</div>
+                            <div class="stat-l">Books in collection</div>
+                        </div>
+                        <div class="stat dk">
+                            <div class="stat-n">30</div>
+                            <div class="stat-l">Live per drop</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-n">2wk</div>
+                            <div class="stat-l">Per drop cycle</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-n" style="font-size:36px;display:flex;align-items:center;gap:8px;">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                            </div>
+                            <div class="stat-l">Mumbai only</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- TORN PAPER DIVIDER -->
+        <div class="torn flip" style="background:var(--warm-white)">
+            <svg viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,0 L0,28 C15,22 28,34 45,28 C62,22 75,32 95,26 C115,20 130,30 150,25 C170,20 185,32 205,27 C225,22 240,31 260,26 C280,21 295,33 315,28 C335,23 350,31 370,26 C390,21 405,33 425,27 C445,21 460,32 480,27 C500,22 515,31 535,26 C555,21 570,33 590,28 C610,23 625,32 645,27 C665,22 680,34 700,28 C720,22 735,31 755,26 C775,21 790,33 810,27 C830,21 845,32 865,27 C885,22 900,31 920,26 C940,21 955,33 975,28 C995,23 1010,32 1030,27 C1050,22 1065,34 1085,28 C1105,22 1120,31 1140,26 C1160,21 1175,32 1200,27 L1200,0 Z" fill="var(--cream)"/>
+            </svg>
+        </div>
+        <section class="sec how" id="how">
+            <div class="inner">
+                <div class="lbl">How it works</div>
+                <h2>
+                    borrowing in <em>four steps.</em>
+                </h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-n">01</div>
+                        <svg class="step-icon" viewBox="0 0 24 24">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                        <h3>Browse</h3>
+                        <p>Scroll through the current drop. Every book has a personal one-liner — not a plot summary, but why I think you should read it.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-n">02</div>
+                        <svg class="step-icon" viewBox="0 0 24 24">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        <h3>Request</h3>
+                        <p>DM me on Instagram with the title. First DM gets the book — if it's out, you join the waitlist.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-n">03</div>
+                        <svg class="step-icon" viewBox="0 0 24 24">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <h3>Receive</h3>
+                        <p>Pick up free from my place anytime, or get it delivered on weekends via Wefast — delivery cost is on you.</p>
+                    </div>
+                    <div class="step special">
+                        <div class="step-n">04</div>
+                        <svg class="step-icon" viewBox="0 0 24 24">
+                            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+                            <line x1="6" y1="1" x2="6" y2="4"/>
+                            <line x1="10" y1="1" x2="10" y2="4"/>
+                            <line x1="14" y1="1" x2="14" y2="4"/>
+                        </svg>
+                        <h3>Return + Coffee</h3>
+                        <p>Return within 2 weeks. One extension available on request. And if possible — treat Sneha to a coffee. No fees, no fines, just good vibes and caffeine.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- TORN PAPER DIVIDER -->
+        <div class="torn" style="background:var(--green-dark)">
+            <svg viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,0 L0,28 C15,22 28,34 45,28 C62,22 75,32 95,26 C115,20 130,30 150,25 C170,20 185,32 205,27 C225,22 240,31 260,26 C280,21 295,33 315,28 C335,23 350,31 370,26 C390,21 405,33 425,27 C445,21 460,32 480,27 C500,22 515,31 535,26 C555,21 570,33 590,28 C610,23 625,32 645,27 C665,22 680,34 700,28 C720,22 735,31 755,26 C775,21 790,33 810,27 C830,21 845,32 865,27 C885,22 900,31 920,26 C940,21 955,33 975,28 C995,23 1010,32 1030,27 C1050,22 1065,34 1085,28 C1105,22 1120,31 1140,26 C1160,21 1175,32 1200,27 L1200,0 Z" fill="var(--cream)"/>
+            </svg>
+        </div>
+        <section class="paths" id="paths">
+            <div class="paths-inner">
+                <div class="lbl">Choose your experience</div>
+                <h2 style="color:white;">
+                    two ways to <em>find your next read.</em>
+                </h2>
+                <div class="paths-grid">
+                    <div class="path browse">
+                        <svg class="path-icon" viewBox="0 0 24 24">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                            <line x1="8" y1="7" x2="16" y2="7"/>
+                            <line x1="8" y1="11" x2="14" y2="11"/>
+                        </svg>
+                        <h3>Browse the Drop</h3>
+                        <p>Scroll through the books available right now, find something that calls to you, and DM to request. New books drop every two weeks — so if nothing grabs you today, check back soon.</p>
+                        <a href="#catalog" class="path-btn">See what's available →</a>
+                    </div>
+                    <div class="path rec">
+                        <svg class="path-icon" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                        </svg>
+                        <h3>Let Sneha Pick for You</h3>
+                        <p>Not sure what to read? DM me — tell me what you last loved, what you're in the mood for, how much time you have. I'll find something from the shelf that's right for you.</p>
+                        <a href="#contact" class="path-btn">DM for a recommendation →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- TORN PAPER DIVIDER -->
+        <div class="torn flip" style="background:var(--cream)">
+            <svg viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,0 L0,28 C15,22 28,34 45,28 C62,22 75,32 95,26 C115,20 130,30 150,25 C170,20 185,32 205,27 C225,22 240,31 260,26 C280,21 295,33 315,28 C335,23 350,31 370,26 C390,21 405,33 425,27 C445,21 460,32 480,27 C500,22 515,31 535,26 C555,21 570,33 590,28 C610,23 625,32 645,27 C665,22 680,34 700,28 C720,22 735,31 755,26 C775,21 790,33 810,27 C830,21 845,32 865,27 C885,22 900,31 920,26 C940,21 955,33 975,28 C995,23 1010,32 1030,27 C1050,22 1065,34 1085,28 C1105,22 1120,31 1140,26 C1160,21 1175,32 1200,27 L1200,0 Z" fill="var(--green-dark)"/>
+            </svg>
+        </div>
+        <section class="sec catalog" id="catalog">
+            <div class="inner">
+                <div class="lbl">The current drop</div>
+                <h2>
+                    books I've <em>genuinely loved.</em>
+                </h2>
+                <p class="catalog-intro">
+                    The first drop is for the ones I'd recommend without hesitation — to anyone, for any mood. These aren't just books I own. They're books I'd press into your hands if you were sitting next to me. Something for everyone on this shelf.<br>
+                    <br>
+                    <em>Lending them out is genuinely terrifying. Please be kind to them.</em>
+                </p>
+                <div class="drop-badge">Drop 01 · May 2026 · Pressed into your hands</div>
+                <div class="genre-tabs" id="genre-tabs">
+                    <button class="gtab active" onclick="filter('all',this)">All</button>
+                </div>
+                <div class="books-grid" id="books-grid"></div>
+            </div>
+        </section>
+        <!-- TORN PAPER DIVIDER -->
+        <div class="torn" style="background:var(--terra-light)">
+            <svg viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,0 L0,28 C15,22 28,34 45,28 C62,22 75,32 95,26 C115,20 130,30 150,25 C170,20 185,32 205,27 C225,22 240,31 260,26 C280,21 295,33 315,28 C335,23 350,31 370,26 C390,21 405,33 425,27 C445,21 460,32 480,27 C500,22 515,31 535,26 C555,21 570,33 590,28 C610,23 625,32 645,27 C665,22 680,34 700,28 C720,22 735,31 755,26 C775,21 790,33 810,27 C830,21 845,32 865,27 C885,22 900,31 920,26 C940,21 955,33 975,28 C995,23 1010,32 1030,27 C1050,22 1065,34 1085,28 C1105,22 1120,31 1140,26 C1160,21 1175,32 1200,27 L1200,0 Z" fill="var(--cream)"/>
+            </svg>
+        </div>
+        <section class="sec rules" id="rules">
+            <div class="inner">
+                <div class="lbl">The fine print</div>
+                <h2>
+                    simple rules, <em>built on trust.</em>
+                </h2>
+                <div class="rules-grid">
+                    <div class="rule">
+                        <svg class="rule-icon" viewBox="0 0 24 24">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                        <h3>2 weeks</h3>
+                        <p>Each book is yours for 2 weeks. Need more time? One 1-week extension on request. After that, someone else is probably waiting.</p>
+                    </div>
+                    <div class="rule">
+                        <svg class="rule-icon" viewBox="0 0 24 24">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                        <h3>One book at a time</h3>
+                        <p>One book per person during the pilot. Return it and you're welcome to borrow again — as many times as you like.</p>
+                    </div>
+                    <div class="rule gn">
+                        <svg class="rule-icon" viewBox="0 0 24 24">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                        <h3>Runs on trust</h3>
+                        <p>No deposits, no fines. This is a small community and most of us know each other. Social accountability does the work — for now.</p>
+                    </div>
+                    <div class="rule">
+                        <svg class="rule-icon" viewBox="0 0 24 24">
+                            <rect x="1" y="3" width="15" height="13" rx="2"/>
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+                            <circle cx="5.5" cy="18.5" r="2.5"/>
+                            <circle cx="18.5" cy="18.5" r="2.5"/>
+                        </svg>
+                        <h3>Weekends only</h3>
+                        <p>Deliveries via Wefast on weekends only — I have a full-time job 😄. Free pickup from my place anytime.</p>
+                    </div>
+                    <div class="rule">
+                        <svg class="rule-icon" viewBox="0 0 24 24">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <h3>Mumbai only</h3>
+                        <p>Pilot is Mumbai-only for now. Outside Mumbai and really want a book? DM me and we'll figure something out.</p>
+                    </div>
+                    <div class="rule">
+                        <svg class="rule-icon" viewBox="0 0 24 24">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        <h3>Lost or damaged</h3>
+                        <p>Normal wear is fine — these are books, not artifacts. If a book is lost or severely damaged, please replace it. Repeated offences will get you blacklisted from the shelf. No hard feelings, just consequences. 😅</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- TORN PAPER DIVIDER -->
+        <div class="torn flip" style="background:var(--ink)">
+            <svg viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,0 L0,28 C15,22 28,34 45,28 C62,22 75,32 95,26 C115,20 130,30 150,25 C170,20 185,32 205,27 C225,22 240,31 260,26 C280,21 295,33 315,28 C335,23 350,31 370,26 C390,21 405,33 425,27 C445,21 460,32 480,27 C500,22 515,31 535,26 C555,21 570,33 590,28 C610,23 625,32 645,27 C665,22 680,34 700,28 C720,22 735,31 755,26 C775,21 790,33 810,27 C830,21 845,32 865,27 C885,22 900,31 920,26 C940,21 955,33 975,28 C995,23 1010,32 1030,27 C1050,22 1065,34 1085,28 C1105,22 1120,31 1140,26 C1160,21 1175,32 1200,27 L1200,0 Z" fill="var(--terra-light)"/>
+            </svg>
+        </div>
+        <section class="bc" id="bookclub">
+            <div class="inner">
+                <div class="lbl">For the devoted</div>
+                <h2>
+                    Sneha's Book Club —<br>
+                    <em>for high frequency borrowers.</em>
+                </h2>
+                <div class="bc-grid">
+                    <div class="bc-body">
+                        <p>Some people borrow a book and return it. Others borrow a book, return it, and immediately ask for another. And then talk about what they read. And then recommend something back.</p>
+                        <p>
+                            <strong>Those people are my people.</strong>
+                            Sneha's Book Club is for them — a small inner circle of readers who borrow often, talk about books, and help shape what ShelfShare becomes.
+                        </p>
+                        <p>No formal criteria. No application. You'll know you're in it when it happens.</p>
+                        <div class="bc-pq">"In a city of millions, finding kindred spirits is an act of luck. Books make it an act of intention."</div>
+                    </div>
+                    <ul class="perks">
+                        <li class="perk">
+                            <div class="perk-dot">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>The Drop Party</h4>
+                                <p>Inner Circle members meet, present the book they borrowed, swap from their own shelves, and repeat. Books, conversation, community — in the same room.</p>
+                            </div>
+                        </li>
+                        <li class="perk">
+                            <div class="perk-dot">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>First Dibs on the Drop</h4>
+                                <p>You see the new drop before anyone else. By the time the rest of the world finds out, you've already claimed the good ones.</p>
+                            </div>
+                        </li>
+                        <li class="perk">
+                            <div class="perk-dot">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Sneha Picks for You</h4>
+                                <p>Tell me your last great read, your mood, your chaos level — and I'll find something on the shelf that's exactly right for you right now.</p>
+                            </div>
+                        </li>
+                        <li class="perk">
+                            <div class="perk-dot">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                    <line x1="12" y1="12" x2="12" y2="22"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Surprise Events</h4>
+                                <p>From popup reading sessions to cultural events — the Inner Circle gets first dibs on all the fun stuff we dream up.</p>
+                            </div>
+                        </li>
+                        <li class="perk">
+                            <div class="perk-dot">
+                                <svg viewBox="0 0 24 24">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Help build what comes next</h4>
+                                <p>Your borrowing habits and feedback will shape the platform when it exists.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- TORN PAPER DIVIDER -->
+        <div class="torn" style="background:var(--cream)">
+            <svg viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,0 L0,28 C15,22 28,34 45,28 C62,22 75,32 95,26 C115,20 130,30 150,25 C170,20 185,32 205,27 C225,22 240,31 260,26 C280,21 295,33 315,28 C335,23 350,31 370,26 C390,21 405,33 425,27 C445,21 460,32 480,27 C500,22 515,31 535,26 C555,21 570,33 590,28 C610,23 625,32 645,27 C665,22 680,34 700,28 C720,22 735,31 755,26 C775,21 790,33 810,27 C830,21 845,32 865,27 C885,22 900,31 920,26 C940,21 955,33 975,28 C995,23 1010,32 1030,27 C1050,22 1065,34 1085,28 C1105,22 1120,31 1140,26 C1160,21 1175,32 1200,27 L1200,0 Z" fill="var(--ink)"/>
+            </svg>
+        </div>
+        <section class="sec bonus" id="bonus">
+            <div class="inner">
+                <div class="lbl">Bonus experience</div>
+                <h2>
+                    beyond the <em>bookshelf.</em>
+                </h2>
+                <div class="bonus-card">
+                    <div>
+                        <h3>
+                            Heritage Walks<br>
+                            <em>with Vinayak.</em>
+                        </h3>
+                        <div class="bonus-body">
+                            <p>
+                                Sneha's husband <strong>Vinayak Talwar</strong>
+                                is passionate about Mumbai's history and heritage. Inner Circle members get exclusive invitations to his walking tours through the city's most fascinating neighbourhoods.
+                            </p>
+                            <p>A Delhi boy by origin, Vinayak brings an outsider's curiosity to Mumbai — looking past the obvious and into the bylanes, the forgotten corners, and the everyday bustle that most people walk past without a second glance. His walks go beyond SoBo and into the parts of the city where the real magic lives — hidden lanes, crumbling architecture, street vendors with stories older than the buildings around them.</p>
+                            <p>Because the best conversations happen when you're moving through a city that has stories of its own.</p>
+                        </div>
+                    </div>
+                    <div class="bonus-visual">
+                        <div class="bonus-tag">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                <polyline points="9 22 9 12 15 12 15 22"/>
+                            </svg>
+                            Exclusive to Inner Circle members
+        
+                        </div>
+                        <div class="bonus-tag">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="2" y1="12" x2="22" y2="12"/>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                            </svg>
+                            Mumbai's hidden neighbourhoods — beyond the obvious
+        
+                        </div>
+                        <div class="bonus-tag">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                            </svg>
+                            Books + history + community
+        
+                        </div>
+                        <div class="bonus-tag">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M20 12V22H4V12"/>
+                                <path d="M22 7H2v5h20V7z"/>
+                                <path d="M12 22V7"/>
+                                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+                                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+                            </svg>
+                            Invite-only, announced via WhatsApp
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="contact" id="contact">
+            <div class="lbl">Get in touch</div>
+            <h2>
+                ready to <em>borrow something?</em>
+            </h2>
+            <p class="contact-sub">Browse the current drop, pick something that calls to you, and DM me. First message gets the book. It's that simple.</p>
+            <div class="cbtns">
+                <a href="https://www.instagram.com/snehas.tomes" class="cbtn cbtn-w">DM on Instagram @snehas.tomes</a>
+            </div>
+        </section>
+        <footer>
+            <strong>ShelfShare</strong>
+            — a small shelf with big intentions. Mumbai, 2026.
+        </footer>
+        <script>
+            const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTTlRJhb8Mh65yfYQk8uWijtyBlmwZLlyaCRiz3r1PfIPFLBFebqeRCQ3MBN1qlexPQl6xepEhpBHdV/pub?gid=0&single=true&output=csv";
+            let catalog = [];
+            let cur = 'all';
+            let genres = [];
+            function parseField(f) {
+                return (f || '').replace(/^"|"$/g, '').trim();
+            }
+            function parseCSVLine(line) {
+                const cols = [];
+                let field = ''
+                  , inQ = false;
+                for (let c of line) {
+                    if (c === '"') {
+                        inQ = !inQ;
+                    } else if (c === ',' && !inQ) {
+                        cols.push(parseField(field));
+                        field = '';
+                    } else {
+                        field += c;
+                    }
+                }
+                cols.push(parseField(field));
+                return cols;
+            }
+            function parseCSV(text) {
+                const lines = text.trim().split('\n');
+                const rows = lines.slice(1);
+                catalog = rows.map(line => {
+                    const c = parseCSVLine(line);
+                    return {
+                        title: c[0] || '',
+                        author: c[1] || '',
+                        genre: c[2] || '',
+                        subgenre: c[3] || '',
+                        desc: c[8] || '',
+                        av: (c[9] || '').toLowerCase() === 'available'
+                    };
+                }
+                ).filter(b => b.title);
+                genres = [...new Set(catalog.map(b => b.genre).filter(Boolean))].sort();
+                buildTabs();
+            }
+            function buildTabs() {
+                const container = document.getElementById('genre-tabs');
+                container.innerHTML = `<button class="gtab active" onclick="filter('all',this)">All</button>` + genres.map(g => `<button class="gtab" onclick="filter('${g}',this)">${g}</button>`).join('');
+            }
+            function filter(g, el) {
+                cur = g;
+                document.querySelectorAll('.gtab').forEach(t => t.classList.remove('active'));
+                el.classList.add('active');
+                render();
+            }
+            function render() {
+                const grid = document.getElementById('books-grid');
+                const f = cur === 'all' ? catalog : catalog.filter(b => b.genre === cur);
+                if (!f.length) {
+                    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted);font-style:italic;font-family:\'Playfair Display\',serif;font-size:16px;">No books in this category right now.</div>';
+                    return;
+                }
+                grid.innerHTML = f.map(b => `<div class="book-card ${b.av ? '' : 'out'}"><span class="book-status ${b.av ? 'av' : 'bw'}">${b.av ? 'Available' : 'Borrowed'}</span><div class="book-genre">${b.genre}${b.subgenre ? ' · <span style="opacity:0.7">' + b.subgenre + '</span>' : ''}</div><div class="book-title">${b.title}</div><div class="book-author">${b.author}</div><div class="book-desc">${b.desc}</div></div>`).join('');
+            }
+            document.getElementById('books-grid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted);font-style:italic;font-family:\'Playfair Display\',serif;font-size:16px;">Loading the shelf...</div>';
+            fetch(SHEET_CSV).then(r => r.text()).then(text => {
+                parseCSV(text);
+                render();
+            }
+            ).catch( () => {
+                document.getElementById('books-grid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted);font-style:italic;font-family:\'Playfair Display\',serif;font-size:16px;">Could not load the shelf right now. Please try again shortly.</div>';
+            }
+            );
+        </script>
+    </body>
+</html>

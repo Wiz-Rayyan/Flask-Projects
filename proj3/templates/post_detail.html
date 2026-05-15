@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="blog-post">
+            <h1>{{ post.title }}</h1>
+            <p class="text-muted">
+                Posted by {{ post.author.username }} on {{ post.date_posted.strftime('%B %d, %Y at %I:%M %p') }}
+            </p>
+            <hr>
+            <div class="post-content">
+                {% if post.content|length > 1000 %}
+                    <p>{{ post.content }}</p>
+                {% else %}
+                    <p>{{ post.content }}</p>
+                {% endif %}
+            </div>
+            
+            {% if post.author == current_user %}
+                <hr>
+                <div class="mt-3">
+                    <a href="{{ url_for('routes.update_post', post_id=post.id) }}" class="btn btn-secondary">Edit Post</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Post</button>
+                </div>
+            {% endif %}
+            
+            <div class="mt-4">
+                <a href="{{ url_for('routes.home') }}" class="btn btn-outline-primary">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="content-section">
+            <h4>Post Information</h4>
+            <hr>
+            <p><strong>Author:</strong> {{ post.author.username }}</p>
+            <p><strong>Posted:</strong> {{ post.date_posted.strftime('%B %d, %Y') }}</p>
+            <p><strong>Post ID:</strong> #{{ post.id }}</p>
+        </div>
+        
+        <div class="content-section mt-3">
+            <h4>Share This Post</h4>
+            <hr>
+            <div class="d-grid gap-2">
+                <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard()">Copy Link</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Post?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete "{{ post.title }}"? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="{{ url_for('routes.delete_post', post_id=post.id) }}" method="POST">
+                    <input type="submit" class="btn btn-danger" value="Delete">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyToClipboard() {
+    navigator.clipboard.writeText(window.location.href);
+    alert('Link copied to clipboard!');
+}
+</script>
+
+<style>
+.post-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+.post-content p {
+    margin-bottom: 1.2rem;
+}
+</style>
+{% endblock %}
